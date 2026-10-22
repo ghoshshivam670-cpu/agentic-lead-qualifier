@@ -92,7 +92,7 @@ export default function LeadQualifierPage() {
       } else {
         await response.text();
         throw new Error(
-          "FastAPI backend is offline or unreachable on port 8000. Please start the backend service using: npm run dev:backend"
+          `Qualification API returned an unexpected response (HTTP ${response.status}). Please try again shortly.`
         );
       }
 
