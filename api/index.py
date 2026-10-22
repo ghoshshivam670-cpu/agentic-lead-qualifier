@@ -144,12 +144,12 @@ def clean_scraped_content(html: str) -> tuple[str, str]:
     return title, combined_content[:15000]
 
 CANDIDATE_MODELS = [
+    "gemini-3.5-flash",
+    "gemini-3.5-flash-lite",
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
     "gemini-3.8-flash",
     "gemini-flash-latest",
-    "gemini-pro-latest",
-    "gemini-2.5-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-pro",
 ]
 
 def qualify_with_gemini(text: str, api_key: str) -> LeadQualification:

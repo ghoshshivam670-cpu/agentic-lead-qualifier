@@ -82,10 +82,22 @@ export default function LeadQualifierPage() {
       });
 
       clearInterval(stepInterval);
-      const resData = await response.json();
+
+      // Check if response is valid JSON or an HTML error page (e.g. proxy failure)
+      const contentType = response.headers.get("content-type") || "";
+      let resData: any = null;
+
+      if (contentType.includes("application/json")) {
+        resData = await response.json();
+      } else {
+        await response.text();
+        throw new Error(
+          "FastAPI backend is offline or unreachable on port 8000. Please start the backend service using: npm run dev:backend"
+        );
+      }
 
       if (!response.ok) {
-        throw new Error(resData.detail || resData.error || `HTTP error ${response.status}`);
+        throw new Error(resData?.detail || resData?.error || `HTTP error ${response.status}`);
       }
 
       const result: QualifyResult = {
