@@ -1,16 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  rewrites: async () => {
-    return [
-      {
-        source: '/api/:path*',
-        destination:
-          process.env.NODE_ENV === 'development'
-            ? 'http://127.0.0.1:8000/api/:path*'
-            : '/api/:path*',
-      },
-    ];
-  },
+  // Route handlers in app/api serve /api/* directly. The route handler itself
+  // delegates to the local FastAPI backend in development when it is running.
 };
 
 export default nextConfig;
