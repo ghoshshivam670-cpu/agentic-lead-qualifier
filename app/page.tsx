@@ -85,7 +85,7 @@ export default function LeadQualifierPage() {
 
       // Check if response is valid JSON or an HTML error page (e.g. proxy failure)
       const contentType = response.headers.get("content-type") || "";
-      let resData: any = null;
+      let resData: (QualifyResult & { detail?: string }) | null = null;
 
       if (contentType.includes("application/json")) {
         resData = await response.json();
@@ -96,12 +96,17 @@ export default function LeadQualifierPage() {
         );
       }
 
-      if (!response.ok) {
+      if (!resData || !response.ok) {
         throw new Error(resData?.detail || resData?.error || `HTTP error ${response.status}`);
       }
 
       const result: QualifyResult = {
-        ...resData,
+        success: Boolean(resData.success),
+        url: resData.url || formattedUrl,
+        page_title: resData.page_title,
+        data: resData.data,
+        raw_text_length: resData.raw_text_length,
+        error: resData.error,
         timestamp: new Date().toLocaleTimeString(),
       };
 
